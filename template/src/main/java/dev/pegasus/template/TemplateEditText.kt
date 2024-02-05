@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatEditText
 
 class TemplateEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0): AppCompatEditText(context, attrs, defStyleAttr) {
 
-    // This code is for handling keyboard ime action
+    // This code is for handling built-in keyboard ime action
     /*init {
         setOnKeyListener { _, keyCode, event ->
             when (event?.action) {

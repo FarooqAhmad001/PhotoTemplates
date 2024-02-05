@@ -19,4 +19,8 @@
     <string name="go_to_template_activity">Go To Template Activity</string>
     <string name="go_to_main_activity">Go to Main Activity</string>
     <string name="add_text">Add Text</string>
+
+    <!-- Fragment Home -->
+    <string name="deny">Deny</string>
+
 </resources>

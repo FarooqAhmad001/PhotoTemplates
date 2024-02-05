@@ -12,5 +12,7 @@ data class TemplateModel(
     val frameWidth: Float,
     val frameHeight: Float,
     val frameX: Float,
-    val frameY: Float
+    val frameY: Float,
+    val rotation: Float = 0F,
+    val stickers: List<StickerItem>? = null,
 )

@@ -6,15 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FragmentHome">
 
-    <!--<dev.pegasus.template.TemplateEditText
-        android:id="@+id/templateEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>-->
-
     <dev.pegasus.template.TemplateView
         android:id="@+id/tv_home"
         android:layout_width="0dp"
@@ -97,5 +88,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="LabelFor" />
+
+    <FrameLayout
+        android:id="@+id/fl_tools_Template"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.27"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

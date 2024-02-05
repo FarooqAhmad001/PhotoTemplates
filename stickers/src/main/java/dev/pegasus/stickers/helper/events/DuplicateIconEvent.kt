@@ -17,12 +17,7 @@ class DuplicateIconEvent : StickerIconEvent {
     override fun onActionDown(stickerView: StickerView?, event: MotionEvent?) {}
     override fun onActionMove(stickerView: StickerView?, event: MotionEvent?) {}
     override fun onActionUp(stickerView: StickerView, event: MotionEvent?) {
-        /*val currentSticker = stickerView.currentSticker
-        currentSticker?.let {
-            stickerView.addSticker(currentSticker)
-        } ?: run {
-            Log.e("MyTag", "StickerView: DuplicateIconEvent: onActionUp: ", NullPointerException("Current Sticker is null"))
-        }*/
+        stickerView.duplicateSticker()
     }
 }
 

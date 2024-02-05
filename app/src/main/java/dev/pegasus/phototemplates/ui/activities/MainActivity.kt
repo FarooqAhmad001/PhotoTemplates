@@ -103,12 +103,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
 
         mBinding?.btnDone?.setOnClickListener {
             mBinding?.apply {
-
                 val bitmap = rasmContext?.exportRasm()
                 bitmap?.let {
                     Log.d(TAG, "onCreate: received bitmap width: ${it.width} and height: ${it.height}")
                 }
-
                 btnDone.visibility = View.GONE
                 rvBrushMain.visibility = View.GONE
                 sliderMain.visibility = View.GONE
@@ -164,7 +162,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
             drawableSticker?.let {
                 if (it.intrinsicWidth > 0 && it.intrinsicHeight > 0) {
                     val emojiSticker = DrawableSticker(it)
-                    mBinding?.stickerView?.addSticker(emojiSticker, null)
+                    mBinding?.stickerView?.addSticker(emojiSticker)
                 }
             }
         }
@@ -261,7 +259,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
             override fun onGlobalLayout() {
                 mBinding?.stickerView?.viewTreeObserver!!.removeOnGlobalLayoutListener(this)
                 if (mBinding?.stickerView?.stickerCount!! < 20) {
-                    mBinding?.stickerView?.addSticker(sticker, null)
+                    mBinding?.stickerView?.addSticker(sticker)
                 } else mBinding?.root?.let { Snackbar.make(it, resources.getString(R.string.limit_reached), Snackbar.LENGTH_LONG).show() }
             }
         })
@@ -311,21 +309,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
                 }
             }
 
-            override fun onStickerTouchedDown(sticker: Sticker, isUpdate: Boolean, isDuplicate: Boolean) {
-                if (!isUpdate) return
-                if (sticker is TextSticker) {
-                    showTextBoxDialog(sticker.text)
-                }
+            override fun onStickerTouchedDown(sticker: Sticker) {
                 Log.d("TAG", "onStickerTouchedDown")
+            }
+
+            override fun onStickerDuplicate(sticker: Sticker, callback: (String) -> Unit) {
+
             }
 
             override fun onStickerDragFinished(sticker: Sticker) {}
             override fun onStickerZoomFinished(sticker: Sticker) {}
-            override fun onStickerFlipped(sticker: Sticker) {}
             override fun onStickerDoubleTapped(sticker: Sticker) {}
-            override fun onStickerUpdated(sticker: Sticker) {}
+            override fun onStickerUpdate(sticker: Sticker) {
+                if (sticker is TextSticker) {
+                    showTextBoxDialog(sticker.text)
+                }
+            }
         }
-
     }
 
     override fun onItemClick(model: TemplateModel) {

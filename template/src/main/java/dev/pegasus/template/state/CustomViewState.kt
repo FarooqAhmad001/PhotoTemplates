@@ -4,36 +4,24 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.view.View.BaseSavedState
 
-class CustomViewState : BaseSavedState {
-    var imageAspectRatio: Float = 0f
-    var scaleFactor: Float = 1f
-    var zoomCenterX: Float = 0f
-    var zoomCenterY: Float = 0f
+class CustomViewState(superState: Parcelable?) : BaseSavedState(superState) {
+    var photoAspectRatio: Float = 0f
+    var zoomFactor: Float = 1f
+    var centerX: Float = 0f
+    var centerY: Float = 0f
     var dx: Float = 0f
     var dy: Float = 0f
     var rotationAngle: Float = 0f
 
-    constructor(superState: Parcelable?) : super(superState)
-
-    constructor(parcel: Parcel) : super(parcel) {
-        imageAspectRatio = parcel.readFloat()
-        scaleFactor = parcel.readFloat()
-        zoomCenterX = parcel.readFloat()
-        zoomCenterY = parcel.readFloat()
-        dx = parcel.readFloat()
-        dy = parcel.readFloat()
-        rotationAngle = parcel.readFloat()
-    }
-
     override fun writeToParcel(out: Parcel, flags: Int) {
         super.writeToParcel(out, flags)
-        out.writeFloat(imageAspectRatio)
-        out.writeFloat(scaleFactor)
-        out.writeFloat(zoomCenterX)
-        out.writeFloat(zoomCenterY)
-        out.writeFloat(dx)
-        out.writeFloat(dy)
-        out.writeFloat(rotationAngle)
+        out.writeFloat(photoAspectRatio ?: 0f)
+        out.writeFloat(zoomFactor ?: 1f)
+        out.writeFloat(centerX ?: 0f)
+        out.writeFloat(centerY ?: 0f)
+        out.writeFloat(dx ?: 0f)
+        out.writeFloat(dy ?: 0f)
+        out.writeFloat(rotationAngle ?: 0f)
     }
 
 }

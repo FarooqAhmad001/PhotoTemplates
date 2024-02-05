@@ -3,6 +3,7 @@ package dev.pegasus.stickers
 import android.content.Context
 import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.MaskFilter
 import android.graphics.Rect
 import android.graphics.Typeface
@@ -21,7 +22,7 @@ import dev.pegasus.stickers.helper.Sticker
  * Customize your sticker with text and image background.
  * You can place some text into a given region, however,
  * you can also add a plain text sticker. To support text
- * auto resizing , I take most of the code from AutoResizeTextView.
+ * auto resizing, I take most of the code from AutoResizeTextView.
  * Notice: It's not efficient to add long text due to too much of
  * StaticLayout object allocation.
  */
@@ -101,6 +102,7 @@ open class TextSticker @JvmOverloads constructor(private val context: Context, d
             val dy = textRect.top + textRect.height() / 2 - staticLayout!!.height / 2
             canvas.translate(dx.toFloat(), dy.toFloat())
         }
+
         staticLayout?.draw(canvas)
         canvas.restore()
     }
@@ -185,6 +187,11 @@ open class TextSticker @JvmOverloads constructor(private val context: Context, d
         return this
     }
 
+    fun setTextColor(color: String): TextSticker {
+        textPaint.color = Color.parseColor(color)
+        return this
+    }
+
     fun setTextAlign(alignment: Layout.Alignment): TextSticker {
         this.alignment = alignment
         return this
@@ -222,6 +229,7 @@ open class TextSticker @JvmOverloads constructor(private val context: Context, d
      * Resize this view's text size with respect to its width and height
      * (minus padding). You should always call this method after the initialization.
      */
+
     fun resizeText(): TextSticker {
         val availableHeightPixels = textRect.height()
         val availableWidthPixels = textRect.width()
@@ -239,7 +247,7 @@ open class TextSticker @JvmOverloads constructor(private val context: Context, d
         // or we have reached our minimum text size,
         // incrementally try smaller sizes
         while (targetTextHeightPixels > availableHeightPixels && targetTextSizePixels > minTextSizePixels) {
-            targetTextSizePixels = Math.max(targetTextSizePixels - 2, minTextSizePixels)
+            targetTextSizePixels = (targetTextSizePixels - 2).coerceAtLeast(minTextSizePixels)
             targetTextHeightPixels = getTextHeightPixels(text, availableWidthPixels, targetTextSizePixels)
         }
 
@@ -254,7 +262,7 @@ open class TextSticker @JvmOverloads constructor(private val context: Context, d
             // Measure using a StaticLayout instance
             val staticLayout = StaticLayout(text, textPaintCopy, availableWidthPixels, Layout.Alignment.ALIGN_NORMAL, lineSpacingMultiplier, lineSpacingExtra, false)
 
-            // Check that we have a least one line of rendered text
+            // Check that we have at least one line of rendered text
             if (staticLayout.lineCount > 0) {
                 // Since the line at the specific vertical position would be cut off,
                 // we must trim up to the previous line and add an ellipsis
@@ -310,7 +318,7 @@ open class TextSticker @JvmOverloads constructor(private val context: Context, d
 
         // Safety check
         // (Do not resize if the view does not have dimensions or if there is no text)
-        if (text == null || text.length <= 0 || availableHeightPixels <= 0 || availableWidthPixels <= 0 || maxTextSizePixels <= 0) {
+        if (text.isNullOrEmpty() || availableHeightPixels <= 0 || availableWidthPixels <= 0 || maxTextSizePixels <= 0) {
             return this
         }
         var targetTextSizePixels = maxTextSizePixels
@@ -320,7 +328,7 @@ open class TextSticker @JvmOverloads constructor(private val context: Context, d
         // or we have reached our minimum text size,
         // incrementally try smaller sizes
         while (targetTextHeightPixels > availableHeightPixels && targetTextSizePixels > minTextSizePixels) {
-            targetTextSizePixels = Math.max(targetTextSizePixels - 2, minTextSizePixels)
+            targetTextSizePixels = (targetTextSizePixels - 2).coerceAtLeast(minTextSizePixels)
             targetTextHeightPixels = getTextHeightPixels(text, availableWidthPixels, targetTextSizePixels)
         }
 

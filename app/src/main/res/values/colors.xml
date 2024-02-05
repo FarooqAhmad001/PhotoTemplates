@@ -4,4 +4,39 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_black">#201F1F</color>
     <color name="light_black">#433B3B</color>
+
+    <color name="bg_view">#212121</color>
+    <color name="colorOnAny">#C1C1C1</color>
+    <color name="lightGray">#F2F2F2</color>
+
+    <!-- Text Color -->
+    <color name="text_color">#4F4F4F</color>
+
+    <!-- Collage - TextColors -->
+    <color name="collage_text_color_1">#FF0000</color>
+    <color name="collage_text_color_2">#FF5151</color>
+    <color name="collage_text_color_3">#FF6B00</color>
+    <color name="collage_text_color_4">#FF9446</color>
+    <color name="collage_text_color_5">#3300FF</color>
+    <color name="collage_text_color_6">#7D5CFF</color>
+    <color name="collage_text_color_7">#FF0099</color>
+    <color name="collage_text_color_8">#FF7ECC</color>
+    <color name="collage_text_color_9">#00FF19</color>
+    <color name="collage_text_color_10">#80FF8C</color>
+    <color name="collage_text_color_11">#FA00FF</color>
+    <color name="collage_text_color_12">#FD85FF</color>
+    <color name="collage_text_color_13">#FFF500</color>
+    <color name="collage_text_color_14">#FFFB99</color>
+    <color name="collage_text_color_15">#00FFE0</color>
+    <color name="collage_text_color_16">#ACFFF5</color>
+    <color name="collage_text_color_17">#00AB6D</color>
+    <color name="collage_text_color_18">#59C9A0</color>
+    <color name="collage_text_color_19">#00F0FF</color>
+    <color name="collage_text_color_20">#A6F9FE</color>
+    <color name="collage_text_color_21">#000000</color>
+    <color name="collage_text_color_22">#4D4D4D</color>
+    <color name="collage_text_color_23">#5FABC3</color>
+    <color name="collage_text_color_24">#008CB8</color>
+    <color name="collage_text_color_25">#FFFFFF</color>
+
 </resources>

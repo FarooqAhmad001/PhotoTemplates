@@ -8,8 +8,11 @@ import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PointF
+import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.drawable.GradientDrawable
 import android.os.SystemClock
+import android.text.Layout
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -17,25 +20,28 @@ import android.view.ViewConfiguration
 import android.widget.FrameLayout
 import androidx.annotation.IntDef
 import androidx.core.content.ContextCompat
-import androidx.core.view.MotionEventCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import dev.pegasus.stickers.helper.Sticker
 import dev.pegasus.stickers.helper.StickerUtils
 import dev.pegasus.stickers.helper.events.DeleteIconEvent
 import dev.pegasus.stickers.helper.events.DuplicateIconEvent
+import dev.pegasus.stickers.helper.events.UpdateIconEvent
 import dev.pegasus.stickers.helper.events.ZoomAndRotateIconEvent
 import dev.pegasus.stickers.ui.BitmapStickerIcon
+import dev.pegasus.stickers.ui.DrawableSticker
+import dev.pegasus.template.dataClasses.StickerItem
+import dev.pegasus.template.dataClasses.StickerType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.w3c.dom.Text
 import java.io.File
 import java.util.Arrays
 import java.util.Collections
 import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.sqrt
 
 class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
 
@@ -104,8 +110,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     var isConstrained = false
     var onStickerOperationListener: OnStickerOperationListener? = null
     private var lastClickTime: Long = 0
-    var minClickDelayTime = DEFAULT_MIN_CLICK_DELAY_TIME
-        private set
+    private var minClickDelayTime = DEFAULT_MIN_CLICK_DELAY_TIME
 
     init {
         touchSlop = ViewConfiguration.get(context).scaledTouchSlop
@@ -145,19 +150,19 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         icons.add(zoomIcon)
         icons.add(flipIcon)*/
 
-
         val deleteIcon = BitmapStickerIcon(ContextCompat.getDrawable(context, R.drawable.ic_cross), BitmapStickerIcon.LEFT_TOP)
         deleteIcon.iconEvent = DeleteIconEvent()
         val duplicateIcon = BitmapStickerIcon(ContextCompat.getDrawable(context, R.drawable.ic_copy), BitmapStickerIcon.RIGHT_TOP)
-        //duplicateIcon.iconEvent = DuplicateIconEvent()
-        val zoomIcon = BitmapStickerIcon(ContextCompat.getDrawable(context, R.drawable.ic_expand), BitmapStickerIcon.RIGHT_BOTTOM)
-        zoomIcon.iconEvent = ZoomAndRotateIconEvent()
+        duplicateIcon.iconEvent = DuplicateIconEvent()
+        val zoomAndRotateIcon = BitmapStickerIcon(ContextCompat.getDrawable(context, R.drawable.ic_expand), BitmapStickerIcon.RIGHT_BOTTOM)
+        zoomAndRotateIcon.iconEvent = ZoomAndRotateIconEvent()
         val editIcon = BitmapStickerIcon(ContextCompat.getDrawable(context, R.drawable.ic_edit), BitmapStickerIcon.LEFT_BOTTOM)
+        editIcon.iconEvent = UpdateIconEvent()
 
         icons.clear()
         icons.add(deleteIcon)
         icons.add(duplicateIcon)
-        icons.add(zoomIcon)
+        icons.add(zoomAndRotateIcon)
         icons.add(editIcon)
     }
 
@@ -200,7 +205,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         drawStickers(canvas)
     }
 
-    protected fun drawStickers(canvas: Canvas) {
+    private fun drawStickers(canvas: Canvas) {
         for (i in stickers.indices) {
             val sticker = stickers[i]
             sticker?.draw(canvas)
@@ -239,7 +244,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    protected fun configIconMatrix(icon: BitmapStickerIcon, x: Float, y: Float, rotation: Float) {
+    private fun configIconMatrix(icon: BitmapStickerIcon, x: Float, y: Float, rotation: Float) {
         icon.x = x
         icon.y = y
         icon.matrix.reset()
@@ -259,25 +264,18 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         return super.onInterceptTouchEvent(ev)
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (isLocked) {
             return super.onTouchEvent(event)
         }
-        val action = MotionEventCompat.getActionMasked(event)
-        when (action) {
+        when (event?.action) {
             MotionEvent.ACTION_DOWN -> if (!onTouchDown(event)) {
                 return false
             }
 
-            MotionEvent.ACTION_POINTER_DOWN -> {
-                /*
-                old by Sohaib
-                oldDistance = calculateDistance(event)
-                oldRotation = calculateRotation(event)
-                midPoint = calculateMidPoint(event)
-                if (currentSticker != null && isInStickerArea(currentSticker!!, event.getX(1), event.getY(1)) && findCurrentIconTouched() == null) {
-                    currentMode = ZOOM_WITH_TWO_FINGER
-                }*/
+            MotionEvent.ACTION_UP -> {
+                onTouchUp(event)
+                currentMode = NONE
             }
 
             MotionEvent.ACTION_MOVE -> {
@@ -285,25 +283,33 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 invalidate()
             }
 
-            MotionEvent.ACTION_UP -> onTouchUp(event)
+            /*MotionEvent.ACTION_POINTER_DOWN -> {
+                old by Sohaib
+                oldDistance = calculateDistance(event)
+                oldRotation = calculateRotation(event)
+                midPoint = calculateMidPoint(event)
+                if (currentSticker != null && isInStickerArea(currentSticker!!, event.getX(1), event.getY(1)) && findCurrentIconTouched() == null) {
+                    currentMode = ZOOM_WITH_TWO_FINGER
+                }
+            }
+
             MotionEvent.ACTION_POINTER_UP -> {
-                /*
                 Old by Sohaib
                 if (currentMode == ZOOM_WITH_TWO_FINGER && currentSticker != null) {
                     if (onStickerOperationListener != null) {
                         onStickerOperationListener!!.onStickerZoomFinished(currentSticker!!)
                     }
-                }*/
+                }
                 currentMode = NONE
-            }
+            }*/
         }
         return true
     }
 
     /**
-     * @param event MotionEvent received from [)][.onTouchEvent]
+     * @param event MotionEvent received from [.onTouchEvent]
      */
-    protected fun onTouchDown(event: MotionEvent): Boolean {
+    private fun onTouchDown(event: MotionEvent): Boolean {
         currentMode = DRAG
         downX = event.x
         downY = event.y
@@ -318,9 +324,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             currentSticker = findHandlingSticker()
         }
         if (currentSticker != null) {
-            val isUpdate: Boolean = currentIcon?.position == BitmapStickerIcon.LEFT_BOTTOM
-            val isDuplicate: Boolean = currentIcon?.position == BitmapStickerIcon.RIGHT_TOP
-            onStickerOperationListener!!.onStickerTouchedDown(currentSticker!!, isUpdate, isDuplicate)
+            onStickerOperationListener?.onStickerTouchedDown(currentSticker!!)
             downMatrix.set(currentSticker!!.matrix)
             if (bringToFrontCurrentSticker) {
                 stickers.remove(currentSticker)
@@ -334,12 +338,32 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         return true
     }
 
-    protected fun onTouchUp(event: MotionEvent) {
+    fun duplicateSticker() {
+        currentSticker?.let {
+            onStickerOperationListener?.onStickerDuplicate(it) {
+                val sticker = TextSticker(context).apply {
+                    text = it.ifEmpty { "" }
+                    setTextColor(Color.WHITE)
+                    setTextAlign(Layout.Alignment.ALIGN_CENTER)
+                    resizeText()
+                }
+                addSticker(sticker, true)
+            }
+        }
+    }
+
+    fun updateSticker() {
+        currentSticker?.let {
+            onStickerOperationListener?.onStickerUpdate(it)
+        }
+    }
+
+    private fun onTouchUp(event: MotionEvent) {
         val currentTime = SystemClock.uptimeMillis()
         if (currentMode == ICON && currentIcon != null && currentSticker != null) {
             currentIcon!!.onActionUp(this, event)
         }
-        if (currentMode == DRAG && Math.abs(event.x - downX) < touchSlop && abs(event.y - downY) < touchSlop && currentSticker != null) {
+        if (currentMode == DRAG && abs(event.x - downX) < touchSlop && abs(event.y - downY) < touchSlop && currentSticker != null) {
             currentMode = CLICK
             if (onStickerOperationListener != null) {
                 onStickerOperationListener!!.onStickerClicked(currentSticker!!)
@@ -359,7 +383,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         lastClickTime = currentTime
     }
 
-    protected fun handleCurrentMode(event: MotionEvent) {
+    private fun handleCurrentMode(event: MotionEvent) {
         when (currentMode) {
             NONE, CLICK -> {}
             DRAG -> if (currentSticker != null) {
@@ -371,14 +395,14 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 }
             }
 
-            ZOOM_WITH_TWO_FINGER -> if (currentSticker != null) {
+            /*ZOOM_WITH_TWO_FINGER -> if (currentSticker != null) {
                 val newDistance = calculateDistance(event)
                 val newRotation = calculateRotation(event)
                 moveMatrix.set(downMatrix)
                 moveMatrix.postScale(newDistance / oldDistance, newDistance / oldDistance, midPoint.x, midPoint.y)
                 moveMatrix.postRotate(newRotation - oldRotation, midPoint.x, midPoint.y)
                 currentSticker!!.setMatrix(moveMatrix)
-            }
+            }*/
 
             ICON -> if (currentSticker != null && currentIcon != null) {
                 currentIcon!!.onActionMove(this, event)
@@ -387,26 +411,10 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     fun zoomAndRotateCurrentSticker(event: MotionEvent) {
-        zoomAndRotateSticker(currentSticker, event, 0)
+        zoomAndRotateSticker(currentSticker, event)
     }
 
-    fun rotateCurrentSticker(event: MotionEvent) {
-        zoomAndRotateSticker(currentSticker, event, 1)
-    }
-
-    fun zoomAndRotateSticker(sticker: Sticker?, event: MotionEvent, caseType: Int) {
-        /*
-        Old by Sohaib
-        if (sticker != null) {
-            downMatrix.set(currentSticker!!.matrix)
-            val newDistance = calculateDistance(midPoint.x, midPoint.y, event.x, event.y)
-            val newRotation = calculateRotation(midPoint.x, midPoint.y, event.x, event.y)
-            Log.e("HVV1312", "OK ???: " + midPoint.x + " va " + event.x)
-            moveMatrix.set(downMatrix)
-            if (caseType == 0) moveMatrix.postScale(newDistance / oldDistance, newDistance / oldDistance, midPoint.x, midPoint.y) else moveMatrix.postRotate((newRotation - oldRotation) / 20, midPoint.x, midPoint.y)
-            currentSticker!!.setMatrix(moveMatrix)
-        }*/
-
+    private fun zoomAndRotateSticker(sticker: Sticker?, event: MotionEvent) {
         if (sticker != null) {
             downMatrix.set(currentSticker?.matrix)
             val newDistance = calculateDistance(midPoint.x, midPoint.y, event.x, event.y)
@@ -423,21 +431,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    fun customeZoomAndRotateSticker(sticker: Sticker?, x: Int, y: Int, m: Int, n: Int) {
-        if (sticker != null) {
-            val oldD = calculateDistance(midPoint.x, midPoint.y, m.toFloat(), n.toFloat())
-            Log.e("HVV1312", "mid Point : " + midPoint.x + " va " + midPoint.y + " va va va m: " + m + " va n: " + n)
-            val newDistance = calculateDistance(midPoint.x, midPoint.y, x.toFloat(), y.toFloat())
-            moveMatrix.set(downMatrix)
-            moveMatrix.postScale(newDistance / oldD, newDistance / oldD, midPoint.x, midPoint.y)
-            if (currentSticker != null) {
-                currentSticker!!.setMatrix(moveMatrix)
-            }
-            invalidate()
-        }
-    }
-
-    protected fun constrainSticker(sticker: Sticker) {
+    private fun constrainSticker(sticker: Sticker) {
         var moveX = 0f
         var moveY = 0f
         val width = width
@@ -458,7 +452,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         sticker.matrix.postTranslate(moveX, moveY)
     }
 
-    protected fun findCurrentIconTouched(): BitmapStickerIcon? {
+    private fun findCurrentIconTouched(): BitmapStickerIcon? {
         for (icon in icons) {
             val x = icon.x - downX
             val y = icon.y - downY
@@ -473,7 +467,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     /**
      * find the touched Sticker
      */
-    protected fun findHandlingSticker(): Sticker? {
+    private fun findHandlingSticker(): Sticker? {
         for (i in stickers.indices.reversed()) {
             if (isInStickerArea(stickers[i]!!, downX, downY)) {
                 return stickers[i]
@@ -482,13 +476,13 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         return null
     }
 
-    protected fun isInStickerArea(sticker: Sticker, downX: Float, downY: Float): Boolean {
+    private fun isInStickerArea(sticker: Sticker, downX: Float, downY: Float): Boolean {
         tmp[0] = downX
         tmp[1] = downY
         return sticker.contains(tmp)
     }
 
-    protected fun calculateMidPoint(event: MotionEvent?): PointF {
+    /*protected fun calculateMidPoint(event: MotionEvent?): PointF {
         if (event == null || event.pointerCount < 2) {
             midPoint[0f] = 0f
             return midPoint
@@ -497,9 +491,9 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         val y = (event.getY(0) + event.getY(1)) / 2
         midPoint[x] = y
         return midPoint
-    }
+    }*/
 
-    protected fun calculateMidPoint(): PointF {
+    private fun calculateMidPoint(): PointF {
         if (currentSticker == null) {
             midPoint[0f] = 0f
             return midPoint
@@ -511,39 +505,39 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     /**
      * calculate rotation in line with two fingers and x-axis
      */
-    protected fun calculateRotation(event: MotionEvent?): Float {
+    /*protected fun calculateRotation(event: MotionEvent?): Float {
         return if (event == null || event.pointerCount < 2) {
             0f
         } else calculateRotation(event.getX(0), event.getY(0), event.getX(1), event.getY(1))
-    }
+    }*/
 
-    protected fun calculateRotation(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+    private fun calculateRotation(x1: Float, y1: Float, x2: Float, y2: Float): Float {
         val x = (x1 - x2).toDouble()
         val y = (y1 - y2).toDouble()
-        val radians = Math.atan2(y, x)
+        val radians = atan2(y, x)
         return Math.toDegrees(radians).toFloat()
     }
 
     /**
      * calculate Distance in two fingers
      */
-    protected fun calculateDistance(event: MotionEvent?): Float {
+    /*private fun calculateDistance(event: MotionEvent?): Float {
         return if (event == null || event.pointerCount < 2) {
             0f
         } else calculateDistance(event.getX(0), event.getY(0), event.getX(1), event.getY(1))
+    }*/
+
+    private fun calculateDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+        val x = (x1 - x2).toDouble()
+        val y = (y1 - y2).toDouble()
+        return sqrt(x * x + y * y).toFloat()
     }
 
-    protected fun calculateDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+    /*protected fun calculateDistance2(x1: Float, y1: Float, x2: Float, y2: Float): Float {
         val x = (x1 - x2).toDouble()
         val y = (y1 - y2).toDouble()
         return Math.sqrt(x * x + y * y).toFloat()
-    }
-
-    protected fun calculateDistance2(x1: Float, y1: Float, x2: Float, y2: Float): Float {
-        val x = (x1 - x2).toDouble()
-        val y = (y1 - y2).toDouble()
-        return Math.sqrt(x * x + y * y).toFloat()
-    }
+    }*/
 
     override fun onSizeChanged(w: Int, h: Int, oldW: Int, oldH: Int) {
         super.onSizeChanged(w, h, oldW, oldH)
@@ -575,8 +569,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         sizeMatrix.postTranslate(offsetX, offsetY)
 
         //step 2
-        val scaleFactor: Float
-        scaleFactor = if (width < height) {
+        val scaleFactor: Float = if (width < height) {
             width / stickerWidth
         } else {
             height / stickerHeight
@@ -587,7 +580,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         invalidate()
     }
 
-    fun flipCurrentSticker(direction: Int) {
+    /*fun flipCurrentSticker(direction: Int) {
         flip(currentSticker, direction)
     }
 
@@ -607,7 +600,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             }
             invalidate()
         }
-    }
+    }*/
 
     @JvmOverloads
     fun replace(sticker: Sticker?, needStayState: Boolean = true): Boolean {
@@ -624,8 +617,7 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 val offsetX = (width - currentSticker!!.width) / 2f
                 val offsetY = (height - currentSticker!!.height) / 2f
                 sticker.matrix.postTranslate(offsetX, offsetY)
-                val scaleFactor: Float
-                scaleFactor = if (width < height) {
+                val scaleFactor: Float = if (width < height) {
                     width / currentSticker!!.drawable.intrinsicWidth
                 } else {
                     height / currentSticker!!.drawable.intrinsicHeight
@@ -672,20 +664,94 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         invalidate()
     }
 
-    fun addSticker(sticker: Sticker, stickerToBeDuplicated: Sticker?): StickerView {
-        return addSticker(sticker, stickerToBeDuplicated, Sticker.Position.CENTER)
+    fun addSticker(sticker: Sticker, isDuplicate: Boolean = false): StickerView {
+        return addSticker(sticker, isDuplicate, Sticker.Position.CENTER)
     }
 
-    private fun addSticker(sticker: Sticker, stickerToBeDuplicated: Sticker?, @Sticker.Position position: Int): StickerView {
-        if (ViewCompat.isLaidOut(this)) {
-            addStickerImmediately(sticker, stickerToBeDuplicated, position)
+    fun addPredefinedSticker(model: StickerItem, templateWidth: Float, templateHeight: Float, transformedWidth: Float, transformedHeight: Float) {
+        val scaleFactor = if (templateWidth > templateHeight) {
+            transformedWidth / templateWidth
         } else {
-            post { addStickerImmediately(sticker, stickerToBeDuplicated, position) }
+            transformedHeight / templateHeight
+        }
+        // Calculate the width and height for sticker
+        val stickerWidth = model.width * scaleFactor
+        val stickerHeight = model.height * scaleFactor
+        val stickerX = transformedWidth * (model.xAxis / templateWidth)
+        val stickerY = transformedHeight * (model.yAxis / templateHeight)
+        val stickerRight = stickerX + stickerWidth
+        val stickerBottom = stickerY + stickerHeight
+
+        // Calculate the rect in which we place our sticker
+        val rect = Rect(stickerX.toInt(), stickerY.toInt(), stickerRight.toInt(), stickerBottom.toInt())
+
+        when(model.stickerType){
+            StickerType.TextSticker -> {
+                val textSticker = TextSticker(context).apply {
+                    text = model.content
+                    setTextColor(model.color ?: "#000000")
+                    setTextAlign(model.alignment)
+                    drawable = customTransparentBackgroundDrawable(rect.width(), rect.height())
+                    resizeText()
+                }
+                // Calculate scale factors to fit the sticker within the rect
+//                val scaleX = rect.width().toFloat() / textSticker.drawable.intrinsicWidth
+//                val scaleY = rect.height().toFloat() / textSticker.drawable.intrinsicHeight
+
+                textSticker.matrix.setTranslate(stickerX, stickerY)
+                textSticker.matrix.postScale(scaleFactor, scaleFactor, rect.width().toFloat(), rect.height().toFloat())
+
+                /*val widthScaleFactor: Float = width.toFloat() / textSticker.drawable.intrinsicWidth
+                val heightScaleFactor: Float = height.toFloat() / textSticker.drawable.intrinsicHeight
+                val factor = if (widthScaleFactor > heightScaleFactor) heightScaleFactor else widthScaleFactor
+                textSticker.matrix.postScale(factor / 2, factor / 2, ((width + 100) / 2).toFloat(), (height / 2).toFloat())*/
+
+                stickers.add(textSticker)
+            }
+            StickerType.BitmapSticker -> {
+                val drawableSticker = model.imageId?.let { it1 -> ContextCompat.getDrawable(context, it1) }
+                drawableSticker?.let { drawSticker ->
+                    if (drawSticker.intrinsicWidth > 0 && drawSticker.intrinsicHeight > 0) {
+                        // Calculate scale factors to fit the sticker within the rect
+                        val scaleX = rect.width().toFloat() / drawSticker.intrinsicWidth
+                        val scaleY = rect.height().toFloat() / drawSticker.intrinsicHeight
+
+                        val emojiSticker = DrawableSticker(drawSticker)
+                        emojiSticker.matrix.setTranslate(stickerX, stickerY)
+                        emojiSticker.matrix.postScale(scaleX, scaleY, rect.centerX().toFloat(), rect.centerY().toFloat())
+                        //currentSticker = emojiSticker
+                        stickers.add(emojiSticker)
+                    }
+                }
+            }
+            else -> {}
+        }
+
+        //invalidate()
+    }
+
+    private fun customTransparentBackgroundDrawable(width: Int, height: Int): GradientDrawable {
+        // Create a GradientDrawable
+        val shapeDrawable = GradientDrawable()
+        // Set the shape to rectangle
+        shapeDrawable.shape = GradientDrawable.RECTANGLE
+        // Set the color to transparent
+        shapeDrawable.setColor(ContextCompat.getColor(context, android.R.color.transparent))
+        // Set the size (width and height)
+        shapeDrawable.setSize(width, height)
+        return shapeDrawable
+    }
+
+    private fun addSticker(sticker: Sticker, isDuplicate: Boolean, @Sticker.Position position: Int): StickerView {
+        if (ViewCompat.isLaidOut(this)) {
+            addStickerImmediately(sticker, isDuplicate, position)
+        } else {
+            post { addStickerImmediately(sticker, isDuplicate, position) }
         }
         return this
     }
 
-    private fun addStickerImmediately(sticker: Sticker, stickerToBeDuplicated: Sticker?, @Sticker.Position position: Int) {
+    private fun addStickerImmediately(sticker: Sticker, isDuplicate: Boolean, @Sticker.Position position: Int) {
         CoroutineScope(Dispatchers.Default).launch {
             val scaleFactor: Float
             val widthScaleFactor: Float = width.toFloat() / sticker.drawable.intrinsicWidth
@@ -693,12 +759,10 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             scaleFactor = if (widthScaleFactor > heightScaleFactor) heightScaleFactor else widthScaleFactor
             sticker.matrix.postScale(scaleFactor / 2, scaleFactor / 2, ((width + 100) / 2).toFloat(), (height / 2).toFloat())
 
-            stickerToBeDuplicated?.let {
-                sticker.matrix.set(stickerToBeDuplicated.matrix)
+            if (isDuplicate) {
+                currentSticker?.let { sticker.matrix.set(it.matrix) }
                 sticker.matrix.postTranslate(0f, 50f)
-            } ?: run {
-                setStickerPosition(sticker, position)
-            }
+            } else setStickerPosition(sticker, position)
 
             currentSticker = sticker
             stickers.add(sticker)
@@ -813,10 +877,11 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         fun onStickerClicked(sticker: Sticker)
         fun onStickerDeleted(sticker: Sticker)
         fun onStickerDragFinished(sticker: Sticker)
-        fun onStickerTouchedDown(sticker: Sticker, isUpdate: Boolean, isDuplicate: Boolean)
+        fun onStickerTouchedDown(sticker: Sticker)
         fun onStickerZoomFinished(sticker: Sticker)
-        fun onStickerFlipped(sticker: Sticker)
+        fun onStickerDuplicate(sticker: Sticker, callback: (String) -> Unit)
         fun onStickerDoubleTapped(sticker: Sticker)
-        fun onStickerUpdated(sticker: Sticker)
+        fun onStickerUpdate(sticker: Sticker)
     }
+
 }

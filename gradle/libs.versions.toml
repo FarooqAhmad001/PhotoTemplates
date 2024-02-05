@@ -1,11 +1,12 @@
 [versions]
-activity-ktx = "1.8.1"
-agp = "8.2.0"
-koin-android = "3.4.3"
-kotlin = "1.9.0"
+activity-ktx = "1.8.2"
+agp = "8.2.1"
+koin-android = "3.5.0"
+kotlin = "1.9.21"
+ksp = "1.9.0-1.0.12"
 core-ktx = "1.12.0"
 appcompat = "1.6.1"
-material = "1.10.0"
+material = "1.11.0"
 constraintlayout = "2.1.4"
 navigation-fragment-ktx = "2.7.6"
 rasmview = "1.2.1"
@@ -27,3 +28,6 @@ glide = { group = "com.github.bumptech.glide", name = "glide", version = "5.0.0-
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

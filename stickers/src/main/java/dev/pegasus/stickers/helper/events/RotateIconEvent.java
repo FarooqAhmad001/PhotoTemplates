@@ -14,13 +14,13 @@ public class RotateIconEvent implements StickerIconEvent {
 
     @Override
     public void onActionMove(StickerView stickerView, MotionEvent event) {
-        stickerView.rotateCurrentSticker(event);
+        //stickerView.rotateCurrentSticker(event);
     }
 
     @Override
     public void onActionUp(StickerView stickerView, MotionEvent event) {
-        if (stickerView.getOnStickerOperationListener() != null && stickerView.getCurrentSticker() != null) {
+        /*if (stickerView.getOnStickerOperationListener() != null && stickerView.getCurrentSticker() != null) {
             stickerView.getOnStickerOperationListener().onStickerZoomFinished(stickerView.getCurrentSticker());
-        }
+        }*/
     }
 }

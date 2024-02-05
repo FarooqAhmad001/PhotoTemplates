@@ -14,4 +14,10 @@
         <item name="round">24dp</item>
     </style>
 
+
+    <!-- ___________________________________________ TextViews ___________________________________________ -->
+    <style name="CustomTextSmall" parent="Theme.PhotoTemplates">
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
+    </style>
+
 </resources>

@@ -4,11 +4,16 @@ import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Log
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.provider.FontRequest
+import androidx.core.provider.FontsContractCompat
 import dev.pegasus.phototemplates.R
 import dev.pegasus.regret.RegretManager
 import dev.pegasus.stickers.StickerView
 import dev.pegasus.stickers.TextSticker
+import dev.pegasus.template.utils.HelperUtils.TAG
 
 class TextManager(private val context: Context) {
 
@@ -20,7 +25,7 @@ class TextManager(private val context: Context) {
         return Handler(handlerThread.looper)
     }
 
-    /*fun applyDefaultTypeFace(regretManager: RegretManager, fontType: String) {
+    fun applyDefaultTypeFace(regretManager: RegretManager, fontType: String) {
         val request = FontRequest(
             "com.google.android.gms.fonts",
             "com.google.android.gms",
@@ -38,6 +43,32 @@ class TextManager(private val context: Context) {
                 } ?: kotlin.run {
                     //val runtimeException = RuntimeException("Cannot set Typeface after applying font in Regret Manager. (FontManager.kt > applyFont)")
                     //runtimeException.recordException("Text Manager")
+                }
+            }
+
+            override fun onTypefaceRequestFailed(reason: Int) {
+                super.onTypefaceRequestFailed(reason)
+                Log.d(TAG, "onTypefaceRequestFailed: called")
+            }
+        }
+        FontsContractCompat.requestFont(context, request, callback, getHandlerThreadHandler())
+    }
+
+    fun applyDefaultTypeFace(stickerView: StickerView, fontType: String) {
+        val request = FontRequest(
+            "com.google.android.gms.fonts",
+            "com.google.android.gms",
+            fontType,
+            R.array.com_google_android_gms_fonts_certs
+        )
+
+        val callback = object : FontsContractCompat.FontRequestCallback() {
+            override fun onTypefaceRetrieved(typeface: Typeface?) {
+                super.onTypefaceRetrieved(typeface)
+                Log.d(TAG, "onTypefaceRetrieved: called")
+                stickerView.currentSticker?.let {
+                    (it as TextSticker).setTypeface(typeface)
+                    stickerView.invalidate()
                 }
             }
 
@@ -108,7 +139,7 @@ class TextManager(private val context: Context) {
         } ?: kotlin.run {
             //LogUtils.showLog(context, "applyFont", "elvis", "Current Sticker is null")
         }
-    }*/
+    }
 
     /* ------------------------------------------------- Text ------------------------------------------------- */
 
@@ -135,6 +166,15 @@ class TextManager(private val context: Context) {
     fun applyTextColor(colorId: Int, stickerView: StickerView, regretManager: RegretManager) {
         stickerView.currentSticker?.let {
             regretManager.setNewTextColor(colorId)
+            (it as TextSticker).setTextColor(ContextCompat.getColor(context, colorId))
+            stickerView.invalidate()
+        } ?: kotlin.run {
+            //LogUtils.showLog(context, "applyTextColor", "elvis", "Current Sticker is null")
+        }
+    }
+
+    fun applyTextColor(colorId: Int, stickerView: StickerView) {
+        stickerView.currentSticker?.let {
             (it as TextSticker).setTextColor(ContextCompat.getColor(context, colorId))
             stickerView.invalidate()
         } ?: kotlin.run {

@@ -64,4 +64,5 @@ public class DrawableSticker extends Sticker {
             drawable = null;
         }
     }
+
 }

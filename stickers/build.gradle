@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.androidLibrary)
 }
 
 android {
@@ -35,4 +35,5 @@ dependencies {
     implementation libs.core.ktx
     implementation libs.appcompat
     implementation libs.material
+    implementation project(path: ':template')
 }
