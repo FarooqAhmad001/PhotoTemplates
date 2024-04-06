@@ -18,7 +18,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import dev.pegasus.template.dataClasses.TemplateModel
+import dev.pegasus.template.helpers.dataClasses.TemplateModel
 import dev.pegasus.template.touchImageView.TouchImageView
 import dev.pegasus.template.utils.HelperUtils
 import dev.pegasus.template.utils.ImageUtils

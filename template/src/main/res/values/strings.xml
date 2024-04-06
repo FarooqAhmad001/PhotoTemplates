@@ -1,1 +1,7 @@
-<resources/>
+<resources>
+
+    <string name="template">Template</string>
+    <string name="zero">0</string>
+    <string name="ten">10</string>
+
+</resources>

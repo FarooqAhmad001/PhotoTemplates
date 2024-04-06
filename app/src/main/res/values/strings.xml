@@ -22,5 +22,6 @@
 
     <!-- Fragment Home -->
     <string name="deny">Deny</string>
+    <string name="save">Save</string>
 
 </resources>

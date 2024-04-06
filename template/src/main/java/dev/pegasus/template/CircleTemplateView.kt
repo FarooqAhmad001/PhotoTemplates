@@ -16,7 +16,7 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toRect
-import dev.pegasus.template.dataClasses.TemplateModel
+import dev.pegasus.template.helpers.dataClasses.TemplateModel
 import dev.pegasus.template.utils.HelperUtils.TAG
 import dev.pegasus.template.utils.ImageUtils
 

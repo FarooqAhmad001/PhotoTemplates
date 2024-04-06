@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.pegasus.phototemplates.R
 import dev.pegasus.phototemplates.commons.listeners.OnTemplateItemClickListener
 import dev.pegasus.phototemplates.databinding.ItemTemplatesRowLayoutBinding
-import dev.pegasus.template.dataClasses.TemplateModel
+import dev.pegasus.template.helpers.dataClasses.TemplateModel
 
 class TemplatesListAdapter(private val onTemplateItemClickListener: OnTemplateItemClickListener) : ListAdapter<TemplateModel, TemplatesListAdapter.CustomViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {

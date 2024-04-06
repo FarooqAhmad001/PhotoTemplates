@@ -26,14 +26,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
-import dev.pegasus.template.dataClasses.TemplateModel
-import dev.pegasus.template.dataClasses.FrameType
-import dev.pegasus.template.state.CustomViewState
+import dev.pegasus.template.helpers.dataClasses.TemplateModel
+import dev.pegasus.template.helpers.dataClasses.FrameType
+import dev.pegasus.template.helpers.state.CustomViewState
 import dev.pegasus.template.utils.HelperUtils.TAG
 import dev.pegasus.template.utils.ImageUtils
 import dev.pegasus.template.utils.RotationGestureDetector
 import dev.pegasus.template.viewModels.TemplateViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Float.min
@@ -154,22 +155,6 @@ class TemplateView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private val viewModel: TemplateViewModel? by lazy {
         ViewModelProvider(context as ViewModelStoreOwner)[TemplateViewModel::class.java]
     }
-
-    /**
-     * @property OnTemplateViewInitialization: An interface, which will provide the transformed width and height of the template
-     * @property onTemplateViewInitialization: An object of the interface
-     * @property setOnTemplateViewListener: A function to set the interface
-     * @property isViewInitialized: An indicator to check whether we provide the transformed width and height once or not.
-     * bcz we don't want to invoke interface function all the times with the same value.
-     */
-    interface OnTemplateViewInitialization {
-        fun onInitialized(scaleWidth: Float, scaleHeight: Float)
-    }
-    private var onTemplateViewInitialization: OnTemplateViewInitialization? = null
-    fun setOnTemplateViewListener(listener: OnTemplateViewInitialization){
-        onTemplateViewInitialization = listener
-    }
-    private var isViewInitialized = false
 
     /**
      * @property setLifecycleOwner: A lifecycle scope to launch coroutine in a scope of the activity or fragment lifecycle
@@ -300,9 +285,10 @@ class TemplateView @JvmOverloads constructor(context: Context, attrs: AttributeS
         transformedWidth = backgroundRect.width() * scaleX
         transformedHeight = backgroundRect.height() * scaleY
 
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.Default) {
-            if (!isViewInitialized) onTemplateViewInitialization?.onInitialized(transformedWidth, transformedHeight)
-        }
+        Log.i(TAG, "setImageFixRectangle: template width: $width")
+        Log.i(TAG, "setImageFixRectangle: template height: $height")
+        Log.i(TAG, "setImageFixRectangle: transformed width: $transformedWidth")
+        Log.i(TAG, "setImageFixRectangle: transformed height: $transformedHeight")
 
         // Calculate the coordinates for the user's image space based on the device's screen size
         templateModel?.let {
@@ -318,23 +304,6 @@ class TemplateView @JvmOverloads constructor(context: Context, attrs: AttributeS
             // Calculate the coordinates for the user's image
             val userImageRight = userImageSpaceX + userImageSpaceWidth
             val userImageBottom = userImageSpaceY + userImageSpaceHeight
-
-            /*// Calculate the rotation angle in degrees (replace with your desired angle)
-            val rotationAngle = it.rotation
-
-            // Create a new matrix for rotation
-            val rotationMatrix = Matrix()
-            rotationMatrix.postRotate(rotationAngle, userImageSpaceX + userImageSpaceWidth / 2, userImageSpaceY + userImageSpaceHeight / 2)
-
-            // Apply the rotation to the original matrix
-            matrix.postConcat(rotationMatrix)
-
-            // Calculate the rotated coordinates for the user's image
-            val rotatedCorners = floatArrayOf(userImageSpaceX, userImageSpaceY, userImageSpaceX + userImageSpaceWidth, userImageSpaceY, userImageSpaceX, userImageSpaceY + userImageSpaceHeight, userImageSpaceX + userImageSpaceWidth, userImageSpaceY + userImageSpaceHeight)
-            rotationMatrix.mapPoints(rotatedCorners)
-
-            // Update the imageRectFix with the rotated coordinates
-            imageRectFix.set(rotatedCorners[0], rotatedCorners[1], rotatedCorners[6], rotatedCorners[7])*/
 
             imageRectFix.set(userImageSpaceX, userImageSpaceY, userImageRight, userImageBottom)
         }
@@ -401,6 +370,9 @@ class TemplateView @JvmOverloads constructor(context: Context, attrs: AttributeS
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         Log.d(TAG, "onDraw: is called")
+
+        if (!::lifecycleOwner.isInitialized) return
+
         lifecycleOwner.lifecycleScope.launch {
             // Draw the background template image.
             backgroundBitmap?.let { canvas.drawBitmap(it, matrix, null) }
@@ -527,8 +499,12 @@ class TemplateView @JvmOverloads constructor(context: Context, attrs: AttributeS
                     scaleGestureDetector.onTouchEvent(it)
                     // Handle the two-finger rotation gesture
                     rotationGestureDetector.onTouchEvent(it)
+                    // Handle drag feature when both the fingers are on the screen
+                    gestureDetector.onTouchEvent(it)
                 }
-                gestureDetector.onTouchEvent(it)
+                // Handle single finger drag feature.
+                // Single finger should in position of the image when dragging
+                if (it.pointerCount == 1 && imageRectFix.contains(event.x, event.y)) gestureDetector.onTouchEvent(it)
 
                 when (it.action) {
                     MotionEvent.ACTION_UP -> {

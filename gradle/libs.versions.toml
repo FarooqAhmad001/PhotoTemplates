@@ -1,6 +1,6 @@
 [versions]
 activity-ktx = "1.8.2"
-agp = "8.2.1"
+agp = "8.3.0"
 koin-android = "3.5.0"
 kotlin = "1.9.21"
 ksp = "1.9.0-1.0.12"

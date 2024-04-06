@@ -10,6 +10,7 @@ import android.graphics.Paint
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.SystemClock
 import android.text.Layout
@@ -30,8 +31,8 @@ import dev.pegasus.stickers.helper.events.UpdateIconEvent
 import dev.pegasus.stickers.helper.events.ZoomAndRotateIconEvent
 import dev.pegasus.stickers.ui.BitmapStickerIcon
 import dev.pegasus.stickers.ui.DrawableSticker
-import dev.pegasus.template.dataClasses.StickerItem
-import dev.pegasus.template.dataClasses.StickerType
+import dev.pegasus.template.helpers.dataClasses.StickerItem
+import dev.pegasus.template.helpers.dataClasses.StickerType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -668,17 +669,25 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         return addSticker(sticker, isDuplicate, Sticker.Position.CENTER)
     }
 
-    fun addPredefinedSticker(model: StickerItem, templateWidth: Float, templateHeight: Float, transformedWidth: Float, transformedHeight: Float) {
+    fun addPredefinedSticker(model: StickerItem, templateWidth: Float, templateHeight: Float, typeFace: Typeface? = null) {
         val scaleFactor = if (templateWidth > templateHeight) {
-            transformedWidth / templateWidth
+            width / templateWidth
         } else {
-            transformedHeight / templateHeight
+            height / templateHeight
         }
+
+        Log.i(TAG, "addPredefinedSticker: sticker view width: $width")
+        Log.i(TAG, "addPredefinedSticker: sticker view height: $height")
+
         // Calculate the width and height for sticker
         val stickerWidth = model.width * scaleFactor
         val stickerHeight = model.height * scaleFactor
-        val stickerX = transformedWidth * (model.xAxis / templateWidth)
-        val stickerY = transformedHeight * (model.yAxis / templateHeight)
+
+        val stickerX = if (model.xAxis == 0f) width * (model.xAxis / templateWidth) - (stickerWidth / 2)
+        else width * (model.xAxis / templateWidth)
+        val stickerY = if (model.yAxis == 0f) height * (model.yAxis / templateHeight) - (stickerHeight / 2)
+        else height * (model.yAxis / templateHeight)
+
         val stickerRight = stickerX + stickerWidth
         val stickerBottom = stickerY + stickerHeight
 
@@ -691,20 +700,16 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
                     text = model.content
                     setTextColor(model.color ?: "#000000")
                     setTextAlign(model.alignment)
+                    setTypeface(typeFace)
                     drawable = customTransparentBackgroundDrawable(rect.width(), rect.height())
                     resizeText()
                 }
                 // Calculate scale factors to fit the sticker within the rect
-//                val scaleX = rect.width().toFloat() / textSticker.drawable.intrinsicWidth
-//                val scaleY = rect.height().toFloat() / textSticker.drawable.intrinsicHeight
+                val scaleX = rect.width().toFloat() / textSticker.drawable.intrinsicWidth
+                val scaleY = rect.height().toFloat() / textSticker.drawable.intrinsicHeight
 
                 textSticker.matrix.setTranslate(stickerX, stickerY)
-                textSticker.matrix.postScale(scaleFactor, scaleFactor, rect.width().toFloat(), rect.height().toFloat())
-
-                /*val widthScaleFactor: Float = width.toFloat() / textSticker.drawable.intrinsicWidth
-                val heightScaleFactor: Float = height.toFloat() / textSticker.drawable.intrinsicHeight
-                val factor = if (widthScaleFactor > heightScaleFactor) heightScaleFactor else widthScaleFactor
-                textSticker.matrix.postScale(factor / 2, factor / 2, ((width + 100) / 2).toFloat(), (height / 2).toFloat())*/
+                textSticker.matrix.postScale(scaleX, scaleY, rect.centerX().toFloat(), rect.centerY().toFloat())
 
                 stickers.add(textSticker)
             }
@@ -719,15 +724,12 @@ class StickerView @JvmOverloads constructor(context: Context, attrs: AttributeSe
                         val emojiSticker = DrawableSticker(drawSticker)
                         emojiSticker.matrix.setTranslate(stickerX, stickerY)
                         emojiSticker.matrix.postScale(scaleX, scaleY, rect.centerX().toFloat(), rect.centerY().toFloat())
-                        //currentSticker = emojiSticker
                         stickers.add(emojiSticker)
                     }
                 }
             }
             else -> {}
         }
-
-        //invalidate()
     }
 
     private fun customTransparentBackgroundDrawable(width: Int, height: Int): GradientDrawable {

@@ -1,12 +1,14 @@
-package dev.pegasus.template.dataProviders
+package dev.pegasus.template.helpers.dataProviders
 
 import android.text.Layout
+import androidx.core.content.res.ResourcesCompat
 import dev.pegasus.template.R
-import dev.pegasus.template.dataClasses.TemplateModel
-import dev.pegasus.template.dataClasses.FrameType
-import dev.pegasus.template.dataClasses.StickerItem
-import dev.pegasus.template.dataClasses.StickerType
-import dev.pegasus.template.dataClasses.TemplateType
+import dev.pegasus.template.helpers.dataClasses.TemplateModel
+import dev.pegasus.template.helpers.dataClasses.FrameType
+import dev.pegasus.template.helpers.dataClasses.StickerItem
+import dev.pegasus.template.helpers.dataClasses.StickerType
+import dev.pegasus.template.helpers.dataClasses.TemplateType
+import kotlin.coroutines.coroutineContext
 
 class DpTemplates {
 
@@ -35,9 +37,20 @@ class DpTemplates {
         TemplateModel(id = 4, templateType = TemplateType.Portrait, frameType = FrameType.Circle, thumbnailImage = R.drawable.img_template_birthday_thumbnail_4, bgImage = R.drawable.img_template_birthday_background_4, template = R.drawable.img_template_birthday_overlay_4, width = 1080F, height = 1350F, frameWidth = 507F, frameHeight = 507F, frameX = 272F, frameY = 418F),
         TemplateModel(id = 5, templateType = TemplateType.Portrait, frameType = FrameType.Rectangle, thumbnailImage = R.drawable.img_template_birthday_thumbnail_5, bgImage = R.drawable.img_template_birthday_background_5, template = R.drawable.img_template_birthday_overlay_5, width = 1080F, height = 1350F, frameWidth = 477F, frameHeight = 649F, frameX = 360F, frameY = 483F),
         TemplateModel(id = 6, templateType = TemplateType.Portrait, frameType = FrameType.Circle, thumbnailImage = R.drawable.img_template_birthday_thumbnail_6, bgImage = R.drawable.img_template_birthday_background_6, template = R.drawable.img_template_birthday_overlay_6, width = 1080F, height = 1350F, frameWidth = 410F, frameHeight = 410F, frameX = 335F, frameY = 535F),
-        /*TemplateModel(id = 7, templateType = TemplateType.Portrait, frameType = FrameType.Circle, thumbnailImage = R.drawable.img_template_birthday_thumbnail_7, bgImage = R.drawable.img_template_birthday_background_7, template = R.drawable.img_template_birthday_overlay_7, width = 1080F, height = 1350F, frameWidth = 380F, frameHeight = 381F, frameX = 349F, frameY = 369F, stickers = listOf(
-            StickerItem(id = 0, width = 262F, height = 147F, xAxis = 420F, yAxis = 837f, content = "HAPPY", font = "Bebas", weight = "122.24F", size = 0.0f, lineHeight = 0.0f, color = "#E24E36")
-        )),*/
+        TemplateModel(id = 7, templateType = TemplateType.Portrait, frameType = FrameType.Rectangle, thumbnailImage = R.drawable.img_template_birthday_thumbnail_7, bgImage = R.drawable.img_template_birthday_background_7, template = R.drawable.img_template_birthday_overlay_7, width = 1080F, height = 1350F, frameWidth = 591F, frameHeight = 594.25F, frameX = 221.43F, frameY = 209.74F, rotation = -0.36F, stickers = listOf(
+            StickerItem(id = 0, stickerType = StickerType.TextSticker, imageId = null, width = 262f, height = 147f, xAxis = 420f, yAxis = 837f, content = "HAPPY", font = null, weight = 400f, size = 122.24f, lineHeight = 0.0f, color = "#E24E36"),
+            StickerItem(id = 1, stickerType = StickerType.TextSticker, imageId = null, width = 654f, height = 246f, xAxis = 224f, yAxis = 934f, content = "BIRTHDAY", font = null, weight = 400f, size = 205.37f, lineHeight = 0.0f, color = "#000000"),
+            StickerItem(id = 2, stickerType = StickerType.TextSticker, imageId = null, width = 828f, height = 55f, xAxis = 137f, yAxis = 1170f, content = "Happy Birthday! Wishing you joy in every moment.", font = null, weight = 400f, size = 46f, lineHeight = 0.0f, color = "#000000"),
+        )),
+        TemplateModel(id = 8, templateType = TemplateType.Portrait, frameType = FrameType.Circle, thumbnailImage = R.drawable.img_template_birthday_thumbnail_8, bgImage = R.drawable.img_template_birthday_background_8, template = R.drawable.img_template_birthday_overlay_8, width = 1080F, height = 1350F, frameWidth = 612F, frameHeight = 612F, frameX = 152F, frameY = 445F, stickers = listOf(
+            StickerItem(id = 0, stickerType = StickerType.TextSticker, imageId = null, width = 179f, height = 75f, xAxis = 355f, yAxis = 29f, content = "Happy", font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = "#FFFFFF"),
+            StickerItem(id = 1, stickerType = StickerType.TextSticker, imageId = null, width = 585f, height = 180f, xAxis = 240f, yAxis = 90.3f, content = "Birthday", font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = "#F3B14D"),
+            StickerItem(id = 1, stickerType = StickerType.TextSticker, imageId = null, width = 178f, height = 75f, xAxis = 356f, yAxis = 248.94f, content = "To you", font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = "#FFFFFF"),
+            StickerItem(id = 1, stickerType = StickerType.TextSticker, imageId = null, width = 810f, height = 118f, xAxis = 126f, yAxis = 1150f, content = "Wishing you a day filled with love, joy, and all the things that make you smile!", font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = "#FFFFFF"),
+        )),
+        TemplateModel(id = 9, templateType = TemplateType.Portrait, frameType = FrameType.Rectangle, thumbnailImage = R.drawable.img_template_birthday_thumbnail_9, bgImage = R.drawable.img_template_birthday_background_9, template = R.drawable.img_template_birthday_overlay_9, width = 1080F, height = 1350F, frameWidth = 963F, frameHeight = 976F, frameX = 67F, frameY = 101F, stickers = listOf(
+            StickerItem(id = 0, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_winter_tree, width = 374f, height = 320f, xAxis = 0f, yAxis = 685f, content = null, font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = null),
+        )),
 
         // Anniversary templates
         TemplateModel(id = 1, templateType = TemplateType.Portrait, frameType = FrameType.Rectangle, thumbnailImage = R.drawable.img_template_anniversary_thumbnail_1, bgImage = R.drawable.img_template_anniversary_background_1, template = R.drawable.img_template_anniversary_overlay_1, width = 1080F, height = 1350F, frameWidth = 490F, frameHeight = 753F, frameX = 434F, frameY = 505F),
@@ -47,15 +60,24 @@ class DpTemplates {
         TemplateModel(id = 5, templateType = TemplateType.Portrait, frameType = FrameType.Rectangle, thumbnailImage = R.drawable.img_template_anniversary_thumbnail_5, bgImage = R.drawable.img_template_anniversary_background_5, template = R.drawable.img_template_anniversary_overlay_5, width = 1080F, height = 1350F, frameWidth = 635F, frameHeight = 620F, frameX = 200F, frameY = 434F),
         TemplateModel(id = 6, templateType = TemplateType.Portrait, frameType = FrameType.Rectangle, thumbnailImage = R.drawable.img_template_anniversary_thumbnail_6, bgImage = R.drawable.img_template_anniversary_background_6, template = R.drawable.img_template_anniversary_overlay_6, width = 1080F, height = 1350F, frameWidth = 558.45F, frameHeight = 484F, frameX = 251.79F, frameY = 441F),
         TemplateModel(id = 7, templateType = TemplateType.Portrait, frameType = FrameType.Circle, thumbnailImage = R.drawable.img_template_anniversary_thumbnail_7, bgImage = R.drawable.img_template_anniversary_background_7, template = R.drawable.img_template_anniversary_overlay_7, width = 1080F, height = 1350F, frameWidth = 954F, frameHeight = 960F, frameX = 78F, frameY = 262F, stickers = listOf(
-            StickerItem(id = 1, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_gift_01, width = 192f, height = 214f, xAxis = 73f, yAxis = 1090f, content = null, font = null, weight = null, size = 0.0f, lineHeight = 0.0f, color = null),
-            StickerItem(id = 2, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_gift_01, width = 166f, height = 185f, xAxis = 827f, yAxis = 1053f, content = null, font = null, weight = null, size = 0.0f, lineHeight = 0.0f, color = null),
-            StickerItem(id = 3, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_gift_01, width = 91.01f, height = 102f, xAxis = 64f, yAxis = 35f, content = null, font = null, weight = null, size = 0.0f, lineHeight = 0.0f, color = null),
-            StickerItem(id = 4, stickerType = StickerType.TextSticker, imageId = null, width = 828f, height = 101f, xAxis = 152f, yAxis = 130f, content = "Happy Anniversary", font = "Hachi Maru Pop", weight = null, size = 0.0f, alignment = Layout.Alignment.ALIGN_CENTER, lineHeight = 0.0f, color = "#D89D42"),
+            StickerItem(id = 1, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_gift_01, width = 192f, height = 214f, xAxis = 73f, yAxis = 1090f, content = null, font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = null),
+            StickerItem(id = 2, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_gift_01, width = 166f, height = 185f, xAxis = 827f, yAxis = 1053f, content = null, font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = null),
+            StickerItem(id = 3, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_gift_01, width = 91.01f, height = 102f, xAxis = 64f, yAxis = 35f, content = null, font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = null),
+            StickerItem(id = 4, stickerType = StickerType.TextSticker, imageId = null, width = 828f, height = 101f, xAxis = 152f, yAxis = 130f, content = "Happy Anniversary", font = null, weight = 0f, size = 0.0f, alignment = Layout.Alignment.ALIGN_CENTER, lineHeight = 0.0f, color = "#D89D42"),
         )),
         TemplateModel(id = 8, templateType = TemplateType.Portrait, frameType = FrameType.Rectangle, thumbnailImage = R.drawable.img_template_anniversary_thumbnail_8, bgImage = R.drawable.img_template_anniversary_background_8, template = R.drawable.img_template_anniversary_overlay_8, width = 1080F, height = 1350F, frameWidth = 878.4F, frameHeight = 889.1F, frameX = 160.65F, frameY = 6F, rotation = -9.49F, stickers = listOf(
-            StickerItem(id = 1, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_heart_01, width = 275.54f, height = 257.53f, xAxis = 61.34f, yAxis = 212f, content = null, font = null, weight = null, size = 0.0f, lineHeight = 0.0f, color = null),
-            StickerItem(id = 2, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_heart_01, width = 214f, height = 214.63f, xAxis = 696f, yAxis = 727f, content = null, font = null, weight = null, size = 0.0f, lineHeight = 0.0f, color = null),
-            StickerItem(id = 3, stickerType = StickerType.TextSticker, imageId = null, width = 843f, height = 115f, xAxis = 132f, yAxis = 1006f, content = "Happy Anniversary", font = "Times New Roman", weight = null, size = 0.0f, lineHeight = 0.0f, color = "#FF656C"),
+            StickerItem(id = 1, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_heart_01, width = 156.81f, height = 144.09f, xAxis = 100f, yAxis = 211.57f, content = null, font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = null),
+            StickerItem(id = 2, stickerType = StickerType.BitmapSticker, imageId = R.drawable.sticker_bitmap_heart_01, width = 156.81f, height = 144.09f, xAxis = 791f, yAxis = 807.57f, content = null, font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = null),
+            StickerItem(id = 3, stickerType = StickerType.TextSticker, imageId = null, width = 843f, height = 115f, xAxis = 132f, yAxis = 1006f, content = "Happy Anniversary", font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = "#FF656C"),
+            StickerItem(id = 4, stickerType = StickerType.TextSticker, imageId = null, width = 811f, height = 96f, xAxis = 148f, yAxis = 1142f, content = "Happy Anniversary to a perfect pair of lines, forever intertwined", font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = "#3C3C3C"),
+        )),
+        TemplateModel(id = 9, templateType = TemplateType.Portrait, frameType = FrameType.Circle, thumbnailImage = R.drawable.img_template_anniversary_thumbnail_9, bgImage = R.drawable.img_template_anniversary_background_9, template = R.drawable.img_template_anniversary_overlay_9, width = 1080F, height = 1350F, frameWidth = 752F, frameHeight = 752F, frameX = 164F, frameY = 268F, rotation = 0F, stickers = listOf(
+            StickerItem(id = 1, stickerType = StickerType.TextSticker, imageId = null, width = 310f, height = 137f, xAxis = 25f, yAxis = 1014f, content = "Happy", font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = "#8D531F"),
+            StickerItem(id = 2, stickerType = StickerType.TextSticker, imageId = null, width = 814f, height = 137f, xAxis = 25f, yAxis = 1114f, content = "Anniversary! \uD83C\uDF89\uD83D\uDC95", font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = "#8D531F"),
+        )),
+        TemplateModel(id = 10, templateType = TemplateType.Portrait, frameType = FrameType.Rectangle, thumbnailImage = R.drawable.img_template_anniversary_thumbnail_10, bgImage = R.drawable.img_template_anniversary_background_10, template = R.drawable.img_template_anniversary_overlay_10, width = 1080F, height = 1350F, frameWidth = 1080F, frameHeight = 725F, frameX = 0F, frameY = 2F, rotation = 0F, stickers = listOf(
+            StickerItem(id = 1, stickerType = StickerType.TextSticker, imageId = null, width = 855f, height = 160f, xAxis = 109f, yAxis = 806f, content = "Happy Anniversary", font = null, weight = 0f, size = 0.0f, lineHeight = 0.0f, color = "#FCF6E7"),
+            StickerItem(id = 2, stickerType = StickerType.TextSticker, imageId = null, width = 818f, height = 213f, xAxis = 127f, yAxis = 1017f, content = "Cheers to another year of love, laughter, and endless adventures together!", font = null, weight = 400f, size = 60f, lineHeight = 0.0f, color = "#F7931E"),
         )),
     )
 

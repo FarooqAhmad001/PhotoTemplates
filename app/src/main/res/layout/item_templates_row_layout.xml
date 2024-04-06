@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="dev.pegasus.template.dataClasses.TemplateModel" />
+            type="dev.pegasus.template.helpers.dataClasses.TemplateModel" />
         <variable
             name="itemClick"
             type="dev.pegasus.phototemplates.commons.listeners.OnTemplateItemClickListener" />

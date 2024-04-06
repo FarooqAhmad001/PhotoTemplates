@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources/>
+<resources>
+
+    <color name="selected_tab_color">#F7AA1E</color>
+    <color name="unselected_tab_color">#4B4B4B</color>
+    <color name="rv_background_color">#754B4B4B</color>
+    <color name="builder_background_color">#191919</color>
+    <color name="white_color">#FFFFFF</color>
+    <color name="black_color">#000000</color>
+
+</resources>

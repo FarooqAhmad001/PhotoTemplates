@@ -39,4 +39,6 @@
     <color name="collage_text_color_24">#008CB8</color>
     <color name="collage_text_color_25">#FFFFFF</color>
 
+    <color name="bg_button_color">#FFC700</color>
+
 </resources>

@@ -1,4 +1,4 @@
-package dev.pegasus.template.state
+package dev.pegasus.template.helpers.state
 
 import android.os.Parcel
 import android.os.Parcelable

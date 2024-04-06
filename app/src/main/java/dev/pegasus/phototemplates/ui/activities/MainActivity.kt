@@ -41,8 +41,8 @@ import dev.pegasus.stickers.StickerView
 import dev.pegasus.stickers.TextSticker
 import dev.pegasus.stickers.helper.Sticker
 import dev.pegasus.stickers.ui.DrawableSticker
-import dev.pegasus.template.dataClasses.TemplateModel
-import dev.pegasus.template.dataProviders.DpTemplates
+import dev.pegasus.template.helpers.dataClasses.TemplateModel
+import dev.pegasus.template.helpers.dataProviders.DpTemplates
 import dev.pegasus.template.utils.HelperUtils.TAG
 import dev.pegasus.template.utils.HelperUtils.isValidPosition
 import dev.pegasus.template.viewModels.TemplateViewModel

@@ -11,12 +11,16 @@ import android.graphics.drawable.Drawable
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
+import android.util.Log
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
+import androidx.core.provider.FontRequest
+import androidx.core.provider.FontsContractCompat
 import dev.pegasus.stickers.helper.Sticker
+import dev.pegasus.template.utils.HelperUtils
 
 /**
  * Customize your sticker with text and image background.
@@ -154,7 +158,7 @@ open class TextSticker @JvmOverloads constructor(private val context: Context, d
     }
 
     fun setTypeface(typeface: Typeface?): TextSticker {
-        textPaint.typeface = typeface
+        typeface?.let { textPaint.typeface = typeface }
         return this
     }
 

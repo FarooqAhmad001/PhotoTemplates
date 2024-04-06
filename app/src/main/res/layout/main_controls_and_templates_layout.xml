@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/black"
                     android:layout_marginEnd="10dp"
-                    app:icon="@drawable/ic_draw"
+                    app:icon="@drawable/ic_tab_draw"
                     app:iconGravity="top"
                     android:text="@string/draw" />
 

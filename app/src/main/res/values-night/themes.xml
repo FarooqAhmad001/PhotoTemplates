@@ -4,4 +4,27 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
+
+    <style name="Theme.PhotoTemplates" parent="Base.Theme.PhotoTemplates" />
+
+
+    <style name="CustomRoundImageFilterView" parent="Base.Theme.PhotoTemplates">
+        <item name="android:padding">6dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="round">24dp</item>
+    </style>
+
+
+    <!-- ___________________________________________ TextViews ___________________________________________ -->
+    <style name="CustomTextSmall" parent="Theme.PhotoTemplates">
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
+    </style>
+
+    <!-- ____________________________________________ ImageViews ____________________________________________ -->
+    <style name="CustomRoundImage" parent="Theme.PhotoTemplates">
+        <item name="roundPercent">1</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
 </resources>

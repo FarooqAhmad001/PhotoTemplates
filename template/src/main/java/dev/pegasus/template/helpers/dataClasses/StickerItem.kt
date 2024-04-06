@@ -1,5 +1,6 @@
-package dev.pegasus.template.dataClasses
+package dev.pegasus.template.helpers.dataClasses
 
+import android.graphics.fonts.FontFamily
 import android.text.Layout
 import androidx.annotation.DrawableRes
 
@@ -13,8 +14,8 @@ data class StickerItem (
     val xAxis: Float,
     val yAxis: Float,
     val content: String?,
-    val font: String?,
-    val weight: String?,
+    val font: Int? = null,
+    val weight: Float,
     val size: Float,
     val alignment: Layout.Alignment = Layout.Alignment.ALIGN_CENTER,
     val lineHeight: Float,

@@ -1,4 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.home.template.FragmentTemplate">
+
+        <View
+            android:id="@+id/toolbar_view"
+            android:layout_width="0dp"
+            android:layout_height="?actionBarSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/ifv_back_Template"
+            style="@style/CustomRoundImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/toolbar_view"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar_view"
+            app:srcCompat="@drawable/ic_back" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/ifv_premium_Template"
+            style="@style/CustomRoundImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/toolbar_view"
+            app:layout_constraintWidth_percent="0.12"
+            app:srcCompat="@drawable/ic_pro"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mb_save_Template"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="@string/save"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/bg_button_color"
+            app:layout_constraintBottom_toBottomOf="@+id/ifv_back_Template"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ifv_back_Template" />
+
+        <FrameLayout
+            android:id="@+id/fl_container_Template"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rv_main_tabs"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_view">
+
+            <dev.pegasus.template.TemplateView
+                android:id="@+id/tv_Template"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+
+            <dev.pegasus.stickers.StickerView
+                android:id="@+id/sv_stickers_Template"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                app:showBorder="true"
+                app:showIcons="true" />
+
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_main_tabs"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:scrollbars="none"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_layout_templates_main_tabs"/>
+
+        <FrameLayout
+            android:id="@+id/fl_tab_layouts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+            <!--<include
+                layout="@layout/builder_filter_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </FrameLayout>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+<!--
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -100,4 +215,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>-->

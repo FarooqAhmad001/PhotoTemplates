@@ -1,4 +1,4 @@
-package dev.pegasus.template.dataClasses
+package dev.pegasus.template.helpers.dataClasses
 
 data class TemplateModel(
     val id: Int,
