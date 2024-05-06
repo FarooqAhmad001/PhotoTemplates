@@ -23,5 +23,7 @@
     <!-- Fragment Home -->
     <string name="deny">Deny</string>
     <string name="save">Save</string>
+    <string name="click_here">Click here</string>
+    <string name="clear_text_icon">Clear text icon</string>
 
 </resources>

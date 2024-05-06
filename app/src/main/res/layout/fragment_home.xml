@@ -44,8 +44,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
             android:text="@string/save"
             android:textColor="@color/black"
             android:backgroundTint="@color/bg_button_color"
@@ -102,14 +100,69 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible">
 
-            <!--<include
-                layout="@layout/builder_filter_layout"
+            <include
+                layout="@layout/builder_adjust_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-        </FrameLayout>-->
+        </FrameLayout>
+
+        <View
+            android:id="@+id/view_keyboard"
+            android:layout_width="0dp"
+            android:layout_height="?actionBarSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rv_main_tabs"
+            android:background="@color/editText_background_color"
+            android:visibility="gone"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/ifv_keyboard_done"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.15"
+            app:layout_constraintEnd_toEndOf="@id/view_keyboard"
+            app:layout_constraintTop_toTopOf="@id/view_keyboard"
+            app:layout_constraintBottom_toBottomOf="@id/view_keyboard"
+            app:layout_constraintStart_toEndOf="@id/textField"
+            app:srcCompat="@drawable/ic_done"
+            android:scaleType="centerInside"/>
+
+<!--
+        Make one style for textInputLayout and put all this attribute in that style
+-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/click_here"
+            app:layout_constraintStart_toStartOf="@id/view_keyboard"
+            app:layout_constraintEnd_toStartOf="@id/ifv_keyboard_done"
+            app:layout_constraintTop_toTopOf="@id/view_keyboard"
+            app:layout_constraintBottom_toBottomOf="@id/view_keyboard"
+            android:layout_marginStart="5dp"
+            app:endIconMode="clear_text"
+            app:endIconDrawable="@drawable/ic_close"
+            app:endIconTint="@color/unselected_tab_color"
+            app:endIconContentDescription="@string/clear_text_icon"
+            app:boxStrokeColor="@color/unselected_tab_color"
+            app:hintTextColor="@color/unselected_tab_color"
+            android:textColorHint="@color/unselected_tab_color"
+            app:cursorColor="@color/unselected_tab_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_text_sticker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:maxLines="1"
+                android:textColor="@color/black_color"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/builder_background_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+   <androidx.recyclerview.widget.RecyclerView
+       android:id="@+id/rv_material_colors"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       app:layout_constraintWidth_percent="0.9"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintBottom_toTopOf="@id/mtv_opacity"
+       app:layout_constraintVertical_chainStyle="packed"
+       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+       android:orientation="horizontal"
+       app:layout_constraintHeight_min="wrap"
+       tools:listitem="@layout/item_text_style_background"
+       tools:itemCount="5"
+       android:contentDescription="@string/color_recycle_view"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_opacity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/sl_opacity"
+        app:layout_constraintTop_toBottomOf="@id/rv_material_colors"
+        android:text="@string/opacity"
+        android:textColor="@color/white_color"
+        android:gravity="bottom"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sl_opacity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mtv_opacity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_initial_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sl_opacity"
+        app:layout_constraintTop_toTopOf="@id/sl_opacity"
+        app:layout_constraintBottom_toBottomOf="@id/sl_opacity"
+        android:text="0"
+        android:textColor="@color/white_color"
+        android:gravity="center"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_final_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/sl_opacity"
+        app:layout_constraintTop_toTopOf="@id/sl_opacity"
+        app:layout_constraintBottom_toBottomOf="@id/sl_opacity"
+        android:text="10"
+        android:textColor="@color/white_color"
+        android:gravity="center"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

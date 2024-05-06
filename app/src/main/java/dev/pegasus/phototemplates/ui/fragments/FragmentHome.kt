@@ -1,4 +1,4 @@
-package dev.pegasus.phototemplates
+package dev.pegasus.phototemplates.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import dev.pegasus.phototemplates.R
 import dev.pegasus.phototemplates.databinding.FragmentHomeBinding
+import dev.pegasus.phototemplates.helpers.builders.AdjustBuilder
+import dev.pegasus.phototemplates.helpers.builders.DrawBuilder
 import dev.pegasus.phototemplates.helpers.builders.FilterBuilder
+import dev.pegasus.phototemplates.helpers.builders.StickerBuilder
+import dev.pegasus.phototemplates.helpers.builders.TextBuilder
 import dev.pegasus.phototemplates.helpers.viewModels.FrameTemplateViewModel
 import dev.pegasus.template.helpers.adapters.AdapterTemplateMainTabs
 import dev.pegasus.template.helpers.dataClasses.TemplateMainTabsModel
@@ -94,15 +99,19 @@ class FragmentHome : Fragment() {
         when(position){
             0 -> {}
             1 -> filterBuilder.inflateFilterLayout()
-            2 -> {}
-            3 -> {}
-            4 -> {}
-            5 -> {}
+            2 -> adjustBuilder.inflateAdjustLayout()
+            3 -> textBuilder.inflateTextLayout()
+            4 -> stickerBuilder.inflateStickerLayout()
+            5 -> drawBuilder.inflateDrawLayout()
         }
     }
 
     /* ---------------- Layout Builders --------------------- */
     private val filterBuilder by lazy { FilterBuilder(mBinding = binding, inflator = layoutInflater, dataProvider = tabsLayoutList, lifecycleScope = lifecycleScope) }
+    private val adjustBuilder by lazy { AdjustBuilder(mBinding = binding, inflator = layoutInflater, dataProvider = tabsLayoutList, lifecycleScope = lifecycleScope) }
+    private val textBuilder by lazy { TextBuilder(mBinding = binding, inflator = layoutInflater, dataProvider = tabsLayoutList, lifecycleScope = lifecycleScope) }
+    private val stickerBuilder by lazy { StickerBuilder(mBinding = binding, inflater = layoutInflater, dataProvider = null, lifecycleScope = lifecycleScope) }
+    private val drawBuilder by lazy { DrawBuilder(mBinding = binding, inflater = layoutInflater, dataProvider = tabsLayoutList, lifecycleScope = lifecycleScope) }
 
 
 }

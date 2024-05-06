@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black_color">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_sticker_done"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.13"
+        app:layout_constraintDimensionRatio="1:0.8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_done"
+        app:tint="@color/white_color"
+        android:scaleType="centerInside"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@string/builder_text_layout_done_button"/>
+
+    <View
+        android:id="@+id/tab_view"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintHeight_min="40dp"
+        android:background="@drawable/bg_sticker_tab_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ifv_sticker_done"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintStart_toStartOf="@id/tab_view"
+        app:layout_constraintTop_toTopOf="@id/tab_view"
+        app:layout_constraintBottom_toBottomOf="@id/tab_view"
+        app:srcCompat="@drawable/ic_search"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_emoji_category"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toEndOf="@id/ifv_search"
+        app:layout_constraintEnd_toEndOf="@id/tab_view"
+        app:layout_constraintTop_toTopOf="@id/tab_view"
+        app:layout_constraintBottom_toBottomOf="@id/tab_view"
+        android:background="@android:color/transparent"/>
+
+    <!--<com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_smiley_and_people"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tab_view"
+        android:text="@string/smileys_amp_people"
+        android:textColor="@color/unselected_tab_color"
+        android:textSize="11sp"
+        android:paddingVertical="5dp"/>-->
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_emoji"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_min="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tl_emoji_category"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!--<androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_emoji_categories"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintHeight_min="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vp_emoji"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        android:scrollbars="none"
+        android:overScrollMode="never"/>-->
+
+    <!--<com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_search_emoji"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ifv_sticker_done"
+        android:background="@drawable/bg_sticker_edit_text_search_view"
+        android:hint="@string/search_emoji"
+        android:textColorHint="#EBEBF5"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="10dp"
+        android:padding="10dp"/>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

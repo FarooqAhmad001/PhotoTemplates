@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/builder_background_color">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_draw_done"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.13"
+        app:layout_constraintDimensionRatio="1:0.8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_done"
+        app:tint="@color/white_color"
+        android:scaleType="centerInside"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@string/builder_text_layout_done_button"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_brush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mb_erase"
+        app:layout_constraintTop_toBottomOf="@id/ifv_draw_done"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:background="@android:color/transparent"
+        android:text="@string/brush"
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_brush"
+        app:iconGravity="textStart"
+        app:iconTint="@color/white_color"
+        android:textColor="@color/white_color"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_erase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/mb_brush"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ifv_draw_done"
+        android:background="@android:color/transparent"
+        android:text="@string/erase"
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_erase"
+        app:iconGravity="textStart"
+        app:iconTint="@color/unselected_tab_color"
+        android:textColor="@color/unselected_tab_color"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sl_brush_erase"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mb_brush"
+        app:layout_constraintBottom_toTopOf="@id/rv_brush_color"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_slider_initial_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sl_brush_erase"
+        app:layout_constraintTop_toTopOf="@id/sl_brush_erase"
+        app:layout_constraintBottom_toBottomOf="@id/sl_brush_erase"
+        android:text="0"
+        android:textColor="@color/white_color"
+        android:gravity="end"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_slider_final_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/sl_brush_erase"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sl_brush_erase"
+        app:layout_constraintBottom_toBottomOf="@id/sl_brush_erase"
+        android:text="10"
+        android:textColor="@color/white_color"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_brush_color"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_min="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sl_brush_erase"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        tools:listitem="@layout/item_text_style_background"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

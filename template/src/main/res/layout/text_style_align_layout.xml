@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/builder_background_color">
+
+    <View
+        android:id="@+id/view_text_style_controls"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintWidth_percent="0.45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/view_text_align_controls"
+        android:background="@drawable/bg_text_style_align_view"/>
+
+    <View
+        android:id="@+id/view_text_align_controls"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintWidth_percent="0.45"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/view_text_style_controls"
+        android:background="@drawable/bg_text_style_align_view"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_bold_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/view_text_style_controls"
+        app:layout_constraintTop_toTopOf="@id/view_text_style_controls"
+        app:layout_constraintBottom_toBottomOf="@id/view_text_style_controls"
+        app:layout_constraintEnd_toStartOf="@id/ifv_italic_text"
+        app:srcCompat="@drawable/ic_bold_text"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_italic_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/ifv_bold_text"
+        app:layout_constraintTop_toTopOf="@id/view_text_style_controls"
+        app:layout_constraintBottom_toBottomOf="@id/view_text_style_controls"
+        app:layout_constraintEnd_toStartOf="@id/ifv_underline_text"
+        app:srcCompat="@drawable/ic_italic_text"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_underline_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/ifv_italic_text"
+        app:layout_constraintTop_toTopOf="@id/view_text_style_controls"
+        app:layout_constraintBottom_toBottomOf="@id/view_text_style_controls"
+        app:layout_constraintEnd_toStartOf="@id/ifv_stroke_text"
+        app:srcCompat="@drawable/ic_underline"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_stroke_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/ifv_underline_text"
+        app:layout_constraintTop_toTopOf="@id/view_text_style_controls"
+        app:layout_constraintBottom_toBottomOf="@id/view_text_style_controls"
+        app:layout_constraintEnd_toEndOf="@id/view_text_style_controls"
+        app:srcCompat="@drawable/ic_center_stroke"/>
+
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_left_align"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/view_text_align_controls"
+        app:layout_constraintTop_toTopOf="@id/view_text_align_controls"
+        app:layout_constraintBottom_toBottomOf="@id/view_text_align_controls"
+        app:layout_constraintEnd_toStartOf="@id/ifv_center_align"
+        app:srcCompat="@drawable/ic_align_left"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_center_align"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/ifv_left_align"
+        app:layout_constraintTop_toTopOf="@id/view_text_align_controls"
+        app:layout_constraintBottom_toBottomOf="@id/view_text_align_controls"
+        app:layout_constraintEnd_toStartOf="@id/ifv_right_align"
+        app:srcCompat="@drawable/ic_align_equally"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/ifv_right_align"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/ifv_center_align"
+        app:layout_constraintTop_toTopOf="@id/view_text_align_controls"
+        app:layout_constraintBottom_toBottomOf="@id/view_text_align_controls"
+        app:layout_constraintEnd_toEndOf="@id/view_text_align_controls"
+        app:srcCompat="@drawable/ic_align_right"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

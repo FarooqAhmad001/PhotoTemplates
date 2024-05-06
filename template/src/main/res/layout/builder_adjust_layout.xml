@@ -1,65 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/builder_background_color"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/builder_background_color">
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
         android:id="@+id/ifv_adjust_done"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.13"
+        android:scaleType="centerInside"
         app:layout_constraintDimensionRatio="1:0.8"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.13"
         app:srcCompat="@drawable/ic_done"
-        app:tint="@color/white_color"
-        android:scaleType="centerInside"/>
+        app:tint="@color/white_color" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtv_min_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintWidth_percent="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ifv_adjust_done"
+        android:gravity="center"
         android:text="@string/zero"
         android:textColor="@color/white_color"
-        android:gravity="center"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ifv_adjust_done"
+        app:layout_constraintWidth_percent="0.1" />
 
     <com.google.android.material.slider.Slider
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/mtv_min_value"
+        app:layout_constraintBottom_toBottomOf="@id/mtv_min_value"
         app:layout_constraintEnd_toStartOf="@id/mtv_max_value"
-        app:layout_constraintTop_toTopOf="@id/mtv_min_value"
-        app:layout_constraintBottom_toBottomOf="@id/mtv_min_value"/>
+        app:layout_constraintStart_toEndOf="@id/mtv_min_value"
+        app:layout_constraintTop_toTopOf="@id/mtv_min_value" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtv_max_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintWidth_percent="0.1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/mtv_min_value"
-        app:layout_constraintBottom_toBottomOf="@id/mtv_min_value"
+        android:gravity="center"
         android:text="@string/ten"
         android:textColor="@color/white_color"
-        android:gravity="center"/>
+        app:layout_constraintBottom_toBottomOf="@id/mtv_min_value"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mtv_min_value"
+        app:layout_constraintWidth_percent="0.1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_adjust"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mtv_min_value"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         android:scrollbars="none"
-        tools:listitem="@layout/item_layout_templates_main_tabs"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mtv_min_value"
+        tools:listitem="@layout/item_adjust_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

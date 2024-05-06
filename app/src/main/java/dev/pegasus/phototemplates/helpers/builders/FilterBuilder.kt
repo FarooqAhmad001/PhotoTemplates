@@ -6,6 +6,8 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import dev.pegasus.phototemplates.databinding.FragmentHomeBinding
 import dev.pegasus.phototemplates.helpers.extensions.addCleanView
 import dev.pegasus.template.databinding.BuilderFilterLayoutBinding
+import dev.pegasus.template.helpers.Animations.hideFrameLayoutWithAnimation
+import dev.pegasus.template.helpers.Animations.showFrameLayoutWithAnimation
 import dev.pegasus.template.helpers.adapters.AdapterFilters
 import dev.pegasus.template.helpers.dataClasses.RecycleViewModelClass
 import dev.pegasus.template.helpers.dataProviders.DpTemplateTabs
@@ -54,12 +56,14 @@ class FilterBuilder(
                 }
                 adapterFilters.submitList(filtersList)
 
+                //mBinding?.flTabLayouts?.let { showFrameLayoutWithAnimation(it) }
                 mBinding?.flTabLayouts?.visibility = View.VISIBLE
             }
         }
     }
 
     private fun onDoneClicked() {
+        //mBinding?.flTabLayouts?.let { hideFrameLayoutWithAnimation(it) }
         mBinding?.flTabLayouts?.visibility = View.INVISIBLE
         mBinding?.flTabLayouts?.removeAllViews()
     }

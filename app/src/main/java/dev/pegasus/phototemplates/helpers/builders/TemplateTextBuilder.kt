@@ -14,7 +14,7 @@
 //import androidx.lifecycle.LifecycleOwner
 //import androidx.lifecycle.lifecycleScope
 //import com.google.android.material.snackbar.Snackbar
-//import dev.pegasus.phototemplates.FragmentHome
+//import dev.pegasus.phototemplates.ui.fragments.FragmentHome
 //import dev.pegasus.phototemplates.R
 //import dev.pegasus.phototemplates.databinding.FragmentHomeBinding
 //import dev.pegasus.phototemplates.databinding.ViewTemplateTextBinding

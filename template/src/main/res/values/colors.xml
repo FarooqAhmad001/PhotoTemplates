@@ -7,5 +7,8 @@
     <color name="builder_background_color">#191919</color>
     <color name="white_color">#FFFFFF</color>
     <color name="black_color">#000000</color>
+    <color name="editText_background_color">#D1D3D9</color>
+    <color name="style_chip_background_color">#A6A6A6</color>
+    <color name="style_chip_text_color">#565454</color>
 
 </resources>

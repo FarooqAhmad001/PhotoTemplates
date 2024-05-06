@@ -3,5 +3,17 @@
     <string name="template">Template</string>
     <string name="zero">0</string>
     <string name="ten">10</string>
+    <string name="background">Background</string>
+    <string name="border">Border</string>
+    <string name="align">Align</string>
+    <string name="shadow">Shadow</string>
+    <string name="degree">Degree</string>
+    <string name="builder_text_layout_done_button">Builder text layout done button</string>
+    <string name="color_recycle_view">color recycle view</string>
+    <string name="opacity">Opacity</string>
+    <string name="search_emoji">Search Emoji</string>
+    <string name="smileys_amp_people">SMILEYS &amp; PEOPLE</string>
+    <string name="brush">Brush</string>
+    <string name="erase">Erase</string>
 
 </resources>

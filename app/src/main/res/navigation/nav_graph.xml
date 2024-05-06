@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentHome"
-        android:name="dev.pegasus.phototemplates.FragmentHome"
+        android:name="dev.pegasus.phototemplates.ui.fragments.FragmentHome"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 </navigation>

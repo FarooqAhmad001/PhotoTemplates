@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/builder_background_color">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_categories"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:singleLine="true"
+        app:singleSelection="true"
+        android:layout_marginTop="5dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cp_background"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chip_background_selector"
+            android:text="@string/background"
+            android:textColor="@drawable/chip_text_selector"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cp_border"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chip_background_selector"
+            android:text="@string/border"
+            android:textColor="@drawable/chip_text_selector"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cp_align"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chip_background_selector"
+            android:text="@string/align"
+            android:textColor="@drawable/chip_text_selector"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_shadow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/sl_shadow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cg_categories"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent="0.8"
+        android:text="@string/shadow"
+        android:textColor="@color/white_color"
+        android:textSize="14sp"
+        android:gravity="bottom"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sl_shadow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/mtv_degree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mtv_shadow"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_shadow_start_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/white_color"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/sl_shadow"
+        app:layout_constraintEnd_toStartOf="@id/sl_shadow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sl_shadow"
+        android:gravity="end"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_shadow_end_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:textColor="@color/white_color"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/sl_shadow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/sl_shadow"
+        app:layout_constraintTop_toTopOf="@id/sl_shadow"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_degree"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/sl_degree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sl_shadow"
+        app:layout_constraintWidth_percent="0.8"
+        android:gravity="bottom"
+        android:text="@string/degree"
+        android:textColor="@color/white_color"
+        android:textSize="14sp"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sl_degree"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mtv_degree"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_goneMarginBottom="5dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_degree_start_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/white_color"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/sl_degree"
+        app:layout_constraintEnd_toStartOf="@id/sl_degree"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sl_degree"
+        android:gravity="end"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_degree_end_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="180"
+        android:textColor="@color/white_color"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/sl_degree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/sl_degree"
+        app:layout_constraintTop_toTopOf="@id/sl_degree"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/style_main_controls_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="mtv_shadow, sl_shadow, mtv_shadow_start_value, mtv_shadow_end_value, mtv_degree, sl_degree, mtv_degree_start_value, mtv_degree_end_value" />
+
+    <FrameLayout
+        android:id="@+id/fl_style_control_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="wrap"
+        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cg_categories" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
